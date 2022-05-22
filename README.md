@@ -42,8 +42,10 @@ Job状态转移
 ![](job状态转移.png)
 
 # 三、测试用例
-    笔试的Task在测试用例 smart_worker_test.go文件中实现。
-    **分别实现了 Task 1.2、Task 2.1、Task 2.2、Task 2.3和Task 3.1、Task 3.3。**
+    
+笔试的Task在测试用例 [smart_worker_test.go](./worker/smart_worker_test.go)文件中实现。
+    
+    分别实现了 Task 1.2、Task 2.1、Task 2.2、Task 2.3和Task 3.1、Task 3.3。
     
     0. DataHubServer的方法GetJobInfo: 实现 Task 1.1;
     1. TestNewBaseWorker: 实现Task 1.2;
