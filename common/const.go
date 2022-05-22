@@ -1,8 +1,11 @@
 package common
 
-type PriorityType uint8
-type PointType uint16
-type TimestampType int64
+type (
+	JobIDType     int64
+	TimestampType int64
+	PriorityType  uint8
+	PointType     uint16
+)
 
 const (
 	LowPriority     = PriorityType(0)

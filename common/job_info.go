@@ -9,7 +9,7 @@ import (
 )
 
 type JobInfo struct {
-	ID       int64         `json:"JobID"`
+	ID       JobIDType     `json:"JobID"`
 	Created  TimestampType `json:"Created"`
 	Priority PriorityType  `json:"Priority"`
 	Tasks    []PointType   `json:"Tasks"`
@@ -49,7 +49,7 @@ func NewJobInfo(filename string) *JobInfo {
 				if err != nil {
 					return nil
 				}
-				job.ID = id
+				job.ID = JobIDType(id)
 			case "Created":
 				tt := strings.Split(line, ":")
 				created := TimestampType(0)

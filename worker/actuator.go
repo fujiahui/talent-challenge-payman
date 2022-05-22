@@ -10,8 +10,8 @@ import (
 
 // Actuator Job执行管理器
 type Actuator struct {
-	currTimestamp  common.TimestampType // 当前时间戳
-	jobs           map[int64]*util.Job  // ID <--> *Job
+	currTimestamp  common.TimestampType           // 当前时间戳
+	jobs           map[common.JobIDType]*util.Job // ID <--> *Job
 	capacity       common.PointType
 	executingPoint common.PointType
 }
@@ -19,7 +19,7 @@ type Actuator struct {
 func NewActuator(startTimestamp common.TimestampType, capacity common.PointType) *Actuator {
 	return &Actuator{
 		currTimestamp:  startTimestamp,
-		jobs:           make(map[int64]*util.Job),
+		jobs:           make(map[common.JobIDType]*util.Job),
 		capacity:       capacity,
 		executingPoint: 0,
 	}
@@ -42,7 +42,7 @@ func (c *Actuator) Ticking(tick int) []*util.Job {
 	time.Sleep(time.Duration(tick) * time.Millisecond)
 	c.currTimestamp++
 
-	ids := make([]int64, 0, 16)
+	ids := make([]common.JobIDType, 0, 16)
 	jobs := make([]*util.Job, 0, 16)
 	for id, job := range c.jobs {
 		c.executingPoint -= 1

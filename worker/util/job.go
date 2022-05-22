@@ -64,7 +64,7 @@ func SmartCmp(j1 *Job, j2 *Job) bool {
 }
 
 type Job struct {
-	id       int64
+	id       common.JobIDType
 	created  common.TimestampType
 	priority common.PriorityType
 
@@ -73,7 +73,7 @@ type Job struct {
 	status JobStatusType
 }
 
-func NewJob(id int64, created common.TimestampType, priority common.PriorityType, tasks []*Task) *Job {
+func NewJob(id common.JobIDType, created common.TimestampType, priority common.PriorityType, tasks []*Task) *Job {
 	for i, t := range tasks {
 		t.SetJobID(id)
 		t.SetTaskID(i + 1)
@@ -111,7 +111,7 @@ func NewJobFromCommon(info *common.JobInfo) *Job {
 	}
 }
 
-func (j *Job) ID() int64 {
+func (j *Job) ID() common.JobIDType {
 	return j.id
 }
 

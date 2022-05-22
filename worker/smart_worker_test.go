@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func getJobArray(created int64) *common.JobInfoArray {
+func getJobArray(created common.TimestampType) *common.JobInfoArray {
 	jobArray1 := &common.JobInfoArray{
 		JobInfos: []*common.JobInfo{
 			{
@@ -32,7 +32,7 @@ func getJobArray(created int64) *common.JobInfoArray {
 		},
 	}
 
-	jobInfoMap := make(map[int64]*common.JobInfoArray)
+	jobInfoMap := make(map[common.TimestampType]*common.JobInfoArray)
 	jobInfoMap[1] = jobArray1
 	jobInfoMap[3] = jobArray2
 

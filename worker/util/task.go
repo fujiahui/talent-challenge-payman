@@ -15,7 +15,7 @@ const (
 )
 
 type Task struct {
-	jobID       int64
+	jobID       common.JobIDType
 	taskID      int
 	taskPoint   common.PointType // Task总的要执行的Points数
 	remainPoint common.PointType // Task剩余要执行的Points数
@@ -82,7 +82,7 @@ func (t *Task) DisableSpeed() {
 	t.speedFlag = false
 }
 
-func (t *Task) SetJobID(jobID int64) {
+func (t *Task) SetJobID(jobID common.JobIDType) {
 	t.jobID = jobID
 }
 
