@@ -78,9 +78,9 @@ func (c *Actuator) Execute(job *util.Job) {
 }
 
 func (c *Actuator) String() string {
-	ss := make([]string, 0, 16)
+	jj := make([]string, 0, 16)
 	for _, job := range c.jobs {
-		ss = append(ss, job.String())
+		jj = append(jj, job.String())
 	}
 
 	tt := make([]string, 3, 4)
@@ -92,6 +92,25 @@ func (c *Actuator) String() string {
 
 	return fmt.Sprintf("%s | %s | %d",
 		strings.Join(tt, ":"),
-		strings.Join(ss, "|"),
+		strings.Join(jj, ","),
+		c.executingPoint)
+}
+
+func (c *Actuator) StringWithPriority() string {
+	ss := make([]string, 0, 16)
+	for _, job := range c.jobs {
+		ss = append(ss, job.StringWithPriority())
+	}
+
+	tt := make([]string, 3, 4)
+	currTimestamp := int(c.currTimestamp)
+	for i := 2; i >= 0; i-- {
+		tt[i] = fmt.Sprintf("%.2d", currTimestamp%60)
+		currTimestamp /= 60
+	}
+
+	return fmt.Sprintf("%s | %s | %d",
+		strings.Join(tt, ":"),
+		strings.Join(ss, ","),
 		c.executingPoint)
 }

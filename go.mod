@@ -1,3 +1,3 @@
 module github.com/fujiahui/talnet-challenge-payman
 
-go 1.15
+go 1.18

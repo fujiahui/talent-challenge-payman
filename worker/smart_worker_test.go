@@ -49,7 +49,7 @@ func TestNewBaseWorker(t *testing.T) {
 	ctx, cancel := context.WithCancel(root)
 	wg := &sync.WaitGroup{}
 
-	dirPath := "/Users/fujiahui/go-workspace/talent-challenge-payman/warehouse/data/"
+	dirPath := "../warehouse/data/"
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
@@ -72,7 +72,7 @@ func TestNewWorkerWithCapacity(t *testing.T) {
 	ctx, cancel := context.WithCancel(root)
 	wg := &sync.WaitGroup{}
 
-	dirPath := "/Users/fujiahui/go-workspace/talent-challenge-payman/warehouse/data/"
+	dirPath := "../warehouse/data/"
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
@@ -96,7 +96,7 @@ func TestNewWorkerWithSimplePriority(t *testing.T) {
 	ctx, cancel := context.WithCancel(root)
 	wg := &sync.WaitGroup{}
 
-	dirPath := "/Users/fujiahui/go-workspace/talent-challenge-payman/warehouse/data/"
+	dirPath := "../warehouse/data/"
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
@@ -120,11 +120,12 @@ func TestNewWorkerWithSmartPriority(t *testing.T) {
 	ctx, cancel := context.WithCancel(root)
 	wg := &sync.WaitGroup{}
 
-	dirPath := "/Users/fujiahui/go-workspace/talent-challenge-payman/warehouse/data/"
+	dirPath := "../warehouse/data/"
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
 	capacity := common.PointType(10)
+	// capacity := common.PointType(15)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -144,7 +145,7 @@ func TestNewWorkerWithNumPriority(t *testing.T) {
 	ctx, cancel := context.WithCancel(root)
 	wg := &sync.WaitGroup{}
 
-	dirPath := "/Users/fujiahui/go-workspace/talent-challenge-payman/warehouse/data_num_priority/"
+	dirPath := "../warehouse/data_num_priority/"
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
@@ -168,14 +169,14 @@ func TestNewWorkerWithTaskSpeed(t *testing.T) {
 	ctx, cancel := context.WithCancel(root)
 	wg := &sync.WaitGroup{}
 
-	dirPath := "/Users/fujiahui/go-workspace/talent-challenge-payman/warehouse/data_num_priority/"
+	dirPath := "../warehouse/data_num_priority/"
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
 	capacity := common.PointType(10)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	// w := NewBaseWorker(startTimestamp)
-	w.EnableTaskSpeed()
+	w.EnableTaskSpeed() // 启用Task任务加速
 	// w.DisableTaskSpeed()
 	wg.Add(1)
 	go func() {
@@ -184,7 +185,7 @@ func TestNewWorkerWithTaskSpeed(t *testing.T) {
 		w.Start(ctx, dataHub.GetJobInfo)
 	}()
 
-	time.Sleep(time.Duration(5000) * time.Millisecond)
+	time.Sleep(time.Duration(20000) * time.Millisecond)
 	cancel()
 	wg.Wait()
 }

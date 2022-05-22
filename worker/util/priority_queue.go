@@ -82,7 +82,7 @@ func (pq JobPriorityQueue) Swap(i, j int) {
 	pq.queue[j].index = j
 }
 
-func (pq *JobPriorityQueue) Push(x interface{}) {
+func (pq *JobPriorityQueue) Push(x any) {
 	n := len(pq.queue)
 	item := x.(*JobQueue)
 	item.index = n
@@ -92,7 +92,7 @@ func (pq *JobPriorityQueue) Push(x interface{}) {
 	pq.Priority2JobQueue[priority] = item
 }
 
-func (pq *JobPriorityQueue) Pop() interface{} {
+func (pq *JobPriorityQueue) Pop() any {
 	old := pq.queue
 	n := len(old)
 	item := old[n-1]

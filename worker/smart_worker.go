@@ -108,6 +108,7 @@ func (w *SmartWorker) Start(ctx context.Context, h handler) {
 		}
 
 		fmt.Println(w.actuator.String())
+		// fmt.Println(w.actuator.StringWithPriority())
 		if ctx.Err() != nil {
 			break
 		}

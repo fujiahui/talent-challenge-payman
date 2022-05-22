@@ -187,5 +187,14 @@ func (j *Job) String() string {
 	}
 
 	t := j.CurrTask()
-	return fmt.Sprintf("%d-%d(%d)", j.id, j.curr+1, t.RemainPoint())
+	return fmt.Sprintf("%d-%s", j.id, t.String())
+}
+
+func (j *Job) StringWithPriority() string {
+	if j.curr == len(j.tasks) {
+		return ""
+	}
+
+	t := j.CurrTask()
+	return fmt.Sprintf("%d(%d)-%s", j.id, j.Weight(), t.String())
 }

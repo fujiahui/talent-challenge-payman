@@ -107,6 +107,14 @@ func (t *Task) Finished() bool {
 	return t.status == TaskFinished
 }
 
+func (t *Task) String() string {
+	return fmt.Sprintf("%d(%d)", t.taskID, t.remainPoint)
+}
+
+func (t *Task) StringWithExpectedTime() string {
+	return fmt.Sprintf("%d(%d-%d)", t.taskID, t.expectedTimestamp, t.remainPoint)
+}
+
 func (t *Task) Running(tick int) {
 	remainPoint := t.remainPoint
 	for point := remainPoint; point > 0; point-- {
