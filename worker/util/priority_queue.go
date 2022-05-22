@@ -28,8 +28,8 @@ func NewJobPriorityQueue(cmp CmpHandler) *JobPriorityQueue {
 func (pq JobPriorityQueue) Len() int { return len(pq.queues) }
 
 func (pq JobPriorityQueue) Less(i, j int) bool {
-	x := pq.queues[i].queue.Front().Value
-	y := pq.queues[j].queue.Front().Value
+	x := pq.queues[i].Front()
+	y := pq.queues[j].Front()
 
 	return pq.cmp(x, y)
 }
@@ -69,12 +69,12 @@ func (pq *JobPriorityQueue) PopFront() any {
 	}
 
 	q := heap.Pop(pq).(*JobQueue)
-	job := q.PopFront()
+	x := q.PopFront()
 	if q.Len() > 0 {
 		heap.Push(pq, q)
 	}
 
-	return job
+	return x
 }
 
 func (pq *JobPriorityQueue) PushBack(priority common.PriorityType, x any) {

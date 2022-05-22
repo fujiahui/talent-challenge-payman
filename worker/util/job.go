@@ -157,8 +157,7 @@ func (j *Job) NextTask(currTimestamp common.TimestampType) {
 		j.status = JobFinished
 		return
 	}
-	// j.tasks[j.curr].expectedTime = currTimestamp
-	j.tasks[j.curr].SetExpectedTime(currTimestamp)
+	j.CurrTask().SetExpectedTime(currTimestamp)
 	j.status = JobWait
 	return
 }

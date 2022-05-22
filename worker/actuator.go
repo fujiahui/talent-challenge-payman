@@ -8,10 +8,10 @@ import (
 	"time"
 )
 
-// Actuator Job执行管理器
+// Actuator Task执行管理器
 type Actuator struct {
-	currTimestamp  common.TimestampType           // 当前时间戳
-	jobs           map[common.JobIDType]*util.Job // ID <--> *Job
+	currTimestamp  common.TimestampType
+	jobs           map[common.JobIDType]*util.Job
 	capacity       common.PointType
 	executingPoint common.PointType
 }
