@@ -64,13 +64,13 @@ func SmartCmp(j1 *Job, j2 *Job) bool {
 }
 
 type Job struct {
-	id       int64                `json:"id"`
-	created  common.TimestampType `json:"created"`
-	priority common.PriorityType  `json:"priority"`
+	id       int64
+	created  common.TimestampType
+	priority common.PriorityType
 
-	curr   int           `json:"curr"`
-	tasks  []*Task       `json:"tasks"`
-	status JobStatusType `json:"status"`
+	curr   int
+	tasks  []*Task
+	status JobStatusType
 }
 
 func NewJob(id int64, created common.TimestampType, priority common.PriorityType, tasks []*Task) *Job {
