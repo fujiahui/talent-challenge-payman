@@ -33,7 +33,7 @@ Task状态转移
 
 Job状态转移
     
-    JobCreated  =Job已创建
+    JobCreated  = Job已创建
 	JobWait     = Job等待执行
 	JobRunning  = Job正在执行
 	JobSleep    = Job休眠中
