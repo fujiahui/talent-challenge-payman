@@ -1,27 +1,28 @@
 package worker
 
 import (
-	util2 "github.com/fujiahui/talnet-challenge-payman/worker/util"
+	"github.com/fujiahui/talnet-challenge-payman/common"
+	"github.com/fujiahui/talnet-challenge-payman/worker/util"
 )
 
 type Scheduler struct {
-	pq *util2.JobPriorityQueue
+	pq *util.JobPriorityQueue
 }
 
-func NewScheduler(enablePriority bool, cmp util2.CmpHandler) *Scheduler {
+func NewScheduler(enablePriority bool, cmp util.CmpHandler) *Scheduler {
 	return &Scheduler{
-		pq: util2.NewJobPriorityQueue(enablePriority, cmp),
+		pq: util.NewJobPriorityQueue(enablePriority, cmp),
 	}
 }
 
 // Enqueue 入队
-func (s *Scheduler) Enqueue(job *util2.Job) {
+func (s *Scheduler) Enqueue(job *util.Job) {
 	job.SetSleep()
 	s.pq.PushBack(job)
 }
 
 // Dequeue 出队
-func (s *Scheduler) Dequeue(freePoint uint16) *util2.Job {
+func (s *Scheduler) Dequeue(freePoint common.PointType) *util.Job {
 	job := s.pq.PopFront(freePoint)
 	if job == nil {
 		return nil

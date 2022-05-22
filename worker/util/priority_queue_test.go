@@ -54,7 +54,7 @@ func TestJobPriorityQueueWithNothing(t *testing.T) {
 			break
 		}
 		t.Log(job.String())
-		freePoint -= job.CurrTask().RemainPoint()
+		freePoint -= job.CurrTask().TaskPoint()
 	}
 }
 
@@ -82,7 +82,7 @@ func TestJobPriorityQueueWithBaseCmp(t *testing.T) {
 			break
 		}
 		t.Log(job.String())
-		freePoint -= job.CurrTask().RemainPoint()
+		freePoint -= job.CurrTask().TaskPoint()
 	}
 }
 
@@ -110,7 +110,7 @@ func TestJobPriorityQueueWithSimpleCmp_1(t *testing.T) {
 			break
 		}
 		t.Log(job.String())
-		freePoint -= job.CurrTask().RemainPoint()
+		freePoint -= job.CurrTask().TaskPoint()
 	}
 }
 
@@ -138,7 +138,7 @@ func TestJobPriorityQueueWithSimpleCmp_2(t *testing.T) {
 			break
 		}
 		t.Log(job.String())
-		freePoint -= job.CurrTask().RemainPoint()
+		freePoint -= job.CurrTask().TaskPoint()
 	}
 }
 
@@ -166,7 +166,7 @@ func TestJobPriorityQueueWithSimpleCmp_3(t *testing.T) {
 			break
 		}
 		t.Log(job.String())
-		freePoint -= job.CurrTask().RemainPoint()
+		freePoint -= job.CurrTask().TaskPoint()
 	}
 }
 
@@ -194,7 +194,7 @@ func TestJobPriorityQueueWithSmartCmp_11(t *testing.T) {
 			break
 		}
 		t.Log(job.String())
-		freePoint -= job.CurrTask().RemainPoint()
+		freePoint -= job.CurrTask().TaskPoint()
 	}
 }
 
@@ -222,7 +222,7 @@ func TestJobPriorityQueueWithSmartCmp_12(t *testing.T) {
 			break
 		}
 		t.Log(job.String())
-		freePoint -= job.CurrTask().RemainPoint()
+		freePoint -= job.CurrTask().TaskPoint()
 	}
 }
 
@@ -250,7 +250,7 @@ func TestJobPriorityQueueWithSmartCmp_2(t *testing.T) {
 			break
 		}
 		t.Log(job.String())
-		freePoint -= job.CurrTask().RemainPoint()
+		freePoint -= job.CurrTask().TaskPoint()
 	}
 }
 
@@ -278,6 +278,6 @@ func TestJobPriorityQueueWithSmartCmp_3(t *testing.T) {
 			break
 		}
 		t.Log(job.String())
-		freePoint -= job.CurrTask().RemainPoint()
+		freePoint -= job.CurrTask().TaskPoint()
 	}
 }

@@ -105,7 +105,7 @@ func (pq *JobPriorityQueue) Pop() interface{} {
 	return item
 }
 
-func (pq *JobPriorityQueue) PopFront(freePoint uint16) *Job {
+func (pq *JobPriorityQueue) PopFront(freePoint common.PointType) *Job {
 	if pq.Len() == 0 {
 		return nil
 	}

@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"github.com/fujiahui/talnet-challenge-payman/common"
 	"time"
 )
 
@@ -16,7 +17,8 @@ const (
 type Task struct {
 	jobID       int64
 	taskID      int
-	remainPoint uint16 `json:"remain_point"` // Task剩余要执行的Points数
+	taskPoint   common.PointType // Task总的要执行的Points数
+	remainPoint common.PointType // Task剩余要执行的Points数
 	/*
 		预计开始的时间
 			1. 刚创建的Job的第一个Task的 ExpectedTime = Job.Created
@@ -28,31 +30,45 @@ type Task struct {
 	speedFlag bool
 }
 
-func NewTask(point uint16) *Task {
+func NewTask(point common.PointType) *Task {
 	return &Task{
+		taskPoint:   point,
 		remainPoint: point,
 		status:      TaskWait,
 	}
 }
 
 func (t *Task) Ticking() {
-	if t.speedFlag && t.remainPoint > 0 && t.remainPoint%2 == 0 {
-		t.remainPoint -= 2
+	PointOfTicks := common.PointType(0)
+	if t.speedFlag && t.remainPoint > 0 && t.taskPoint%2 == 0 {
+		PointOfTicks = common.PointType(2)
 	} else {
-		t.remainPoint -= 1
+		PointOfTicks = common.PointType(1)
 	}
+
+	t.remainPoint -= PointOfTicks
 
 	if t.remainPoint == 0 {
 		t.status = TaskFinished
 	}
+
+	return
 }
 
-func (t *Task) RemainPoint() uint16 {
-	if t.speedFlag && t.remainPoint > 0 && t.remainPoint%2 == 0 {
+// TaskPoint 用于调度器中进行比较排序
+func (t *Task) TaskPoint() common.PointType {
+	if t.speedFlag && t.remainPoint > 0 && t.taskPoint%2 == 0 {
+		return t.taskPoint / 2
+	}
+	return t.taskPoint
+}
+
+// RemainPoint 用于图标的输出
+func (t *Task) RemainPoint() common.PointType {
+	if t.speedFlag && t.remainPoint > 0 && t.taskPoint%2 == 0 {
 		return t.remainPoint / 2
 	}
 	return t.remainPoint
-
 }
 
 func (t *Task) Status() TaskStatusType {

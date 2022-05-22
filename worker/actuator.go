@@ -2,6 +2,7 @@ package worker
 
 import (
 	"fmt"
+	"github.com/fujiahui/talnet-challenge-payman/common"
 	"github.com/fujiahui/talnet-challenge-payman/worker/util"
 	"strings"
 	"time"
@@ -13,11 +14,11 @@ type Actuator struct {
 	jobs          map[int64]*util.Job // ID <--> *Job
 
 	// 当前分配的任务，剩余的Points数
-	capacity       uint16
-	executingPoint uint16
+	capacity       common.PointType
+	executingPoint common.PointType
 }
 
-func NewActuator(startTimestamp int64, capacity uint16) *Actuator {
+func NewActuator(startTimestamp int64, capacity common.PointType) *Actuator {
 	return &Actuator{
 		currTimestamp:  startTimestamp,
 		jobs:           make(map[int64]*util.Job),
@@ -26,7 +27,7 @@ func NewActuator(startTimestamp int64, capacity uint16) *Actuator {
 	}
 }
 
-func (c *Actuator) ExecutingPoint() uint16 {
+func (c *Actuator) ExecutingPoint() common.PointType {
 	return c.executingPoint
 }
 
@@ -34,7 +35,7 @@ func (c *Actuator) CurrTimestamp() int64 {
 	return c.currTimestamp
 }
 
-func (c *Actuator) FreePoint() uint16 {
+func (c *Actuator) FreePoint() common.PointType {
 	return c.capacity - c.executingPoint
 }
 
@@ -46,7 +47,7 @@ func (c *Actuator) Ticking(tick int) []*util.Job {
 	ids := make([]int64, 0, 16)
 	jobs := make([]*util.Job, 0, 16)
 	for id, job := range c.jobs {
-		c.executingPoint--
+		c.executingPoint -= 1
 		t := job.CurrTask()
 		t.Ticking()
 		if t.Finished() {
@@ -72,7 +73,7 @@ func (c *Actuator) Execute(job *util.Job) {
 	t := job.CurrTask()
 	t.SetRunning()
 
-	c.executingPoint += t.RemainPoint()
+	c.executingPoint += t.TaskPoint()
 	return
 }
 

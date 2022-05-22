@@ -1,6 +1,7 @@
 package common
 
 type PriorityType uint8
+type PointType uint16
 
 const (
 	LowPriority     = PriorityType(0)

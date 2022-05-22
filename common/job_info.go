@@ -12,7 +12,7 @@ type JobInfo struct {
 	ID       int64        `json:"JobID"`
 	Created  int64        `json:"Created"`
 	Priority PriorityType `json:"Priority"`
-	Tasks    []uint16     `json:"Tasks"`
+	Tasks    []PointType  `json:"Tasks"`
 }
 
 func NewJobInfo(filename string) *JobInfo {
@@ -25,7 +25,7 @@ func NewJobInfo(filename string) *JobInfo {
 	reader := bufio.NewReader(file)
 
 	job := JobInfo{
-		Tasks: make([]uint16, 0, 8),
+		Tasks: make([]PointType, 0, 8),
 	}
 	var sectionName string
 	for {
@@ -80,7 +80,7 @@ func NewJobInfo(filename string) *JobInfo {
 				if err != nil {
 					continue
 				}
-				job.Tasks = append(job.Tasks, uint16(task))
+				job.Tasks = append(job.Tasks, PointType(task))
 			}
 		}
 	}

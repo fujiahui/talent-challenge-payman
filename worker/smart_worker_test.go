@@ -16,7 +16,7 @@ func getJobArray(created int64) *common.JobInfoArray {
 				ID:       1,
 				Created:  1,
 				Priority: common.LowPriority,
-				Tasks:    []uint16{5, 6, 7},
+				Tasks:    []common.PointType{5, 6, 7},
 			},
 		},
 	}
@@ -27,7 +27,7 @@ func getJobArray(created int64) *common.JobInfoArray {
 				ID:       2,
 				Created:  3,
 				Priority: common.HighPriority,
-				Tasks:    []uint16{3, 5},
+				Tasks:    []common.PointType{3, 5},
 			},
 		},
 	}
@@ -76,7 +76,7 @@ func TestNewWorkerWithCapacity(t *testing.T) {
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
-	capacity := uint16(10)
+	capacity := common.PointType(10)
 	w := NewWorkerWithCapacity(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -100,7 +100,7 @@ func TestNewWorkerWithSimplePriority(t *testing.T) {
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
-	capacity := uint16(10)
+	capacity := common.PointType(10)
 	w := NewWorkerWithSimplePriority(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -124,7 +124,7 @@ func TestNewWorkerWithSmartPriority(t *testing.T) {
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
-	capacity := uint16(10)
+	capacity := common.PointType(10)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -148,7 +148,7 @@ func TestNewWorkerWithNumPriority(t *testing.T) {
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
-	capacity := uint16(10)
+	capacity := common.PointType(10)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -162,29 +162,29 @@ func TestNewWorkerWithNumPriority(t *testing.T) {
 	wg.Wait()
 }
 
-// Task 3.2
+// Task 3.3
 func TestNewWorkerWithTaskSpeed(t *testing.T) {
 	root := context.Background()
 	ctx, cancel := context.WithCancel(root)
 	wg := &sync.WaitGroup{}
 
-	//dirPath := "/Users/fujiahui/go-workspace/talent-challenge-payman/warehouse/data_num_priority/"
-	//dataHub := server.NewDataHubServer(dirPath)
+	dirPath := "/Users/fujiahui/go-workspace/talent-challenge-payman/warehouse/data_num_priority/"
+	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := int64(-1)
-	// capacity := uint16(10)
-	// w := NewWorkerWithSmartPriority(startTimestamp, capacity)
-	w := NewBaseWorker(startTimestamp)
+	capacity := common.PointType(10)
+	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
+	// w := NewBaseWorker(startTimestamp)
 	w.EnableTaskSpeed()
 	// w.DisableTaskSpeed()
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		w.Start(ctx, getJobArray)
-		// w.Start(ctx, dataHub.GetJobInfo)
+		// w.Start(ctx, getJobArray)
+		w.Start(ctx, dataHub.GetJobInfo)
 	}()
 
-	time.Sleep(time.Duration(2000) * time.Millisecond)
+	time.Sleep(time.Duration(5000) * time.Millisecond)
 	cancel()
 	wg.Wait()
 }
