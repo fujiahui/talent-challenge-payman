@@ -15,14 +15,18 @@
 
 # 二、组件
 ## 2.1 Task执行管理器 Actuator
-    Task执行管理器核心工作是执行满足条件的Task，核心条件为'capacity'容量。
+Task执行管理器 [actuator.go](./worker/actuator.go) 核心工作是执行满足条件的Task，核心条件为capacity容量。
+
     1. 方法 Ticking() 执行Task
     2. 方法 String() 输出图标功能
 
 ## 2.2 Job调度管理器 Scheduler
-    Scheduler调度管理器基于*优先队列 Priority Queue*进行Job调度。
+Scheduler调度管理器 [scheduler.go](./worker/scheduler.go) 基于**优先队列Priority Queue**进行Job调度。
+
     1. Enqueue入队: 方法用于将一个Job压入优先队列中；
     2. Enqueue出队: 方法用于从优先队列中获取一个优先级最高的Job。
+
+此外，优先队列的实现在 [priority_queue.go](./worker/util/priority_queue.go) 文件中，基于go容器 [heap](https://pkg.go.dev/container/heap@go1.18.2) 实现优先队列。队列的每个元素是一个go容器 [list](https://pkg.go.dev/container/list@go1.18.2)，同一优先级的Job进入同一个 [list](https://pkg.go.dev/container/list@go1.18.2)，从而保证同一优先级的Job有先后顺序。
 
 
 Task状态转移
