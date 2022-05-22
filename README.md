@@ -24,6 +24,23 @@
     1. Enqueue入队: 方法用于将一个Job压入优先队列中；
     2. Enqueue出队: 方法用于从优先队列中获取一个优先级最高的Job。
 
+
+Task状态转移
+    
+    TaskWait: 等待被执行
+	TaskRunning: 正在被Actuator执行
+	TaskFinished: 执行完成
+
+Job状态转移
+    
+    JobCreated  =Job已创建
+	JobWait     = Job等待执行
+	JobRunning  = Job正在执行
+	JobSleep    = Job休眠中
+	JobFinished = Job执行完成
+
+![](job状态转移.png)
+
 # 三、测试用例
     笔试的Task在测试用例 smart_worker_test.go文件中实现。
     **分别实现了 Task 1.2、Task 2.1、Task 2.2、Task 2.3和Task 3.1、Task 3.3。**
