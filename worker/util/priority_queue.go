@@ -8,8 +8,8 @@ import (
 type CmpHandler func(x any, y any) bool
 
 type JobPriorityQueue struct {
-	queues            []*JobQueue
-	Priority2JobQueue map[common.PriorityType]*JobQueue
+	queueArray []*JobQueue
+	queueMap   map[common.PriorityType]*JobQueue
 
 	cmp CmpHandler
 }
@@ -17,49 +17,49 @@ type JobPriorityQueue struct {
 func NewJobPriorityQueue(cmp CmpHandler) *JobPriorityQueue {
 
 	pq := &JobPriorityQueue{
-		queues:            make([]*JobQueue, 0, 16),
-		Priority2JobQueue: make(map[common.PriorityType]*JobQueue),
-		cmp:               cmp,
+		queueArray: make([]*JobQueue, 0, 16),
+		queueMap:   make(map[common.PriorityType]*JobQueue),
+		cmp:        cmp,
 	}
 	heap.Init(pq)
 	return pq
 }
 
-func (pq JobPriorityQueue) Len() int { return len(pq.queues) }
+func (pq JobPriorityQueue) Len() int { return len(pq.queueArray) }
 
 func (pq JobPriorityQueue) Less(i, j int) bool {
-	x := pq.queues[i].Front()
-	y := pq.queues[j].Front()
+	x := pq.queueArray[i].Front()
+	y := pq.queueArray[j].Front()
 
 	return pq.cmp(x, y)
 }
 
 func (pq JobPriorityQueue) Swap(i, j int) {
-	pq.queues[i], pq.queues[j] = pq.queues[j], pq.queues[i]
-	pq.queues[i].index = i
-	pq.queues[j].index = j
+	pq.queueArray[i], pq.queueArray[j] = pq.queueArray[j], pq.queueArray[i]
+	pq.queueArray[i].index = i
+	pq.queueArray[j].index = j
 }
 
 func (pq *JobPriorityQueue) Push(x any) {
-	n := len(pq.queues)
+	n := len(pq.queueArray)
 	item := x.(*JobQueue)
 	item.index = n
-	pq.queues = append(pq.queues, item)
+	pq.queueArray = append(pq.queueArray, item)
 	//
 	priority := item.priority
-	pq.Priority2JobQueue[priority] = item
+	pq.queueMap[priority] = item
 }
 
 func (pq *JobPriorityQueue) Pop() any {
-	old := pq.queues
+	old := pq.queueArray
 	n := len(old)
 	item := old[n-1]
 	old[n-1] = nil
 	item.index = -1
-	pq.queues = old[0 : n-1]
+	pq.queueArray = old[0 : n-1]
 	//
 	priority := item.priority
-	delete(pq.Priority2JobQueue, priority)
+	delete(pq.queueMap, priority)
 	return item
 }
 
@@ -99,6 +99,6 @@ func (pq *JobPriorityQueue) PushFront(priority common.PriorityType, x any) {
 }
 
 func (pq *JobPriorityQueue) at(priority common.PriorityType) (*JobQueue, bool) {
-	q, ok := pq.Priority2JobQueue[priority]
+	q, ok := pq.queueMap[priority]
 	return q, ok
 }
