@@ -64,17 +64,16 @@ func SmartCmp(j1 *Job, j2 *Job) bool {
 }
 
 type Job struct {
-	id      int64 `json:"id"`
-	created int64 `json:"created"`
-	// 优先级参数
-	priority common.PriorityType `json:"priority"`
+	id       int64                `json:"id"`
+	created  common.TimestampType `json:"created"`
+	priority common.PriorityType  `json:"priority"`
 
 	curr   int           `json:"curr"`
 	tasks  []*Task       `json:"tasks"`
 	status JobStatusType `json:"status"`
 }
 
-func NewJob(id, created int64, priority common.PriorityType, tasks []*Task) *Job {
+func NewJob(id int64, created common.TimestampType, priority common.PriorityType, tasks []*Task) *Job {
 	for i, t := range tasks {
 		t.SetJobID(id)
 		t.SetTaskID(i + 1)
@@ -117,7 +116,7 @@ func (j *Job) ID() int64 {
 }
 
 func (j *Job) Weight() int64 {
-	return j.CurrTask().ExpectedTimestamp() - int64(j.priority)
+	return int64(j.CurrTask().ExpectedTimestamp()) - int64(j.priority)
 }
 
 func (j *Job) Priority() common.PriorityType {
@@ -149,7 +148,7 @@ func (j *Job) CurrTask() *Task {
 }
 
 // NextTask 顺序执行Job中的Tasks
-func (j *Job) NextTask(currTimestamp int64) {
+func (j *Job) NextTask(currTimestamp common.TimestampType) {
 	j.curr++
 	if j.curr == len(j.tasks) {
 		j.status = JobFinished

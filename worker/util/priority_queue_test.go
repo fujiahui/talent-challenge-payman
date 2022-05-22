@@ -47,7 +47,7 @@ func TestJobPriorityQueueWithNothing(t *testing.T) {
 		pq.PushBack(job)
 	}
 
-	freePoint := uint16(11)
+	freePoint := common.PointType(11)
 	for pq.Len() > 0 {
 		job := pq.PopFront(freePoint)
 		if job == nil {
@@ -75,7 +75,7 @@ func TestJobPriorityQueueWithBaseCmp(t *testing.T) {
 		pq.PushBack(job)
 	}
 
-	freePoint := uint16(11)
+	freePoint := common.PointType(11)
 	for pq.Len() > 0 {
 		job := pq.PopFront(freePoint)
 		if job == nil {
@@ -103,7 +103,7 @@ func TestJobPriorityQueueWithSimpleCmp_1(t *testing.T) {
 		pq.PushBack(job)
 	}
 
-	freePoint := uint16(20)
+	freePoint := common.PointType(20)
 	for pq.Len() > 0 {
 		job := pq.PopFront(freePoint)
 		if job == nil {
@@ -131,7 +131,7 @@ func TestJobPriorityQueueWithSimpleCmp_2(t *testing.T) {
 		pq.PushBack(job)
 	}
 
-	freePoint := uint16(20)
+	freePoint := common.PointType(20)
 	for pq.Len() > 0 {
 		job := pq.PopFront(freePoint)
 		if job == nil {
@@ -159,7 +159,7 @@ func TestJobPriorityQueueWithSimpleCmp_3(t *testing.T) {
 		pq.PushBack(job)
 	}
 
-	freePoint := uint16(20)
+	freePoint := common.PointType(20)
 	for pq.Len() > 0 {
 		job := pq.PopFront(freePoint)
 		if job == nil {
@@ -187,7 +187,7 @@ func TestJobPriorityQueueWithSmartCmp_11(t *testing.T) {
 		pq.PushBack(job)
 	}
 
-	freePoint := uint16(20)
+	freePoint := common.PointType(20)
 	for pq.Len() > 0 {
 		job := pq.PopFront(freePoint)
 		if job == nil {
@@ -215,7 +215,7 @@ func TestJobPriorityQueueWithSmartCmp_12(t *testing.T) {
 		pq.PushBack(job)
 	}
 
-	freePoint := uint16(20)
+	freePoint := common.PointType(20)
 	for pq.Len() > 0 {
 		job := pq.PopFront(freePoint)
 		if job == nil {
@@ -243,7 +243,7 @@ func TestJobPriorityQueueWithSmartCmp_2(t *testing.T) {
 		pq.PushBack(job)
 	}
 
-	freePoint := uint16(20)
+	freePoint := common.PointType(20)
 	for pq.Len() > 0 {
 		job := pq.PopFront(freePoint)
 		if job == nil {
@@ -271,7 +271,7 @@ func TestJobPriorityQueueWithSmartCmp_3(t *testing.T) {
 		pq.PushBack(job)
 	}
 
-	freePoint := uint16(20)
+	freePoint := common.PointType(20)
 	for pq.Len() > 0 {
 		job := pq.PopFront(freePoint)
 		if job == nil {

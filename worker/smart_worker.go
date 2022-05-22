@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-type handler func(created int64) *common.JobInfoArray
+type handler func(created common.TimestampType) *common.JobInfoArray
 
 type SmartWorker struct {
 	// Job调度管理器
@@ -20,7 +20,7 @@ type SmartWorker struct {
 }
 
 // NewBaseWorker Task 1.2
-func NewBaseWorker(startTimestamp int64) *SmartWorker {
+func NewBaseWorker(startTimestamp common.TimestampType) *SmartWorker {
 	capacity := common.PointType(1 << 15) // 16位最大整数 == 不限制容量
 	return &SmartWorker{
 		scheduler: NewScheduler(false, util.BaseCmp),
@@ -29,7 +29,7 @@ func NewBaseWorker(startTimestamp int64) *SmartWorker {
 }
 
 // NewWorkerWithCapacity Task 2.1
-func NewWorkerWithCapacity(startTimestamp int64, capacity common.PointType) *SmartWorker {
+func NewWorkerWithCapacity(startTimestamp common.TimestampType, capacity common.PointType) *SmartWorker {
 	return &SmartWorker{
 		scheduler: NewScheduler(false, util.BaseCmp),
 		actuator:  NewActuator(startTimestamp, capacity),
@@ -37,7 +37,7 @@ func NewWorkerWithCapacity(startTimestamp int64, capacity common.PointType) *Sma
 }
 
 // NewWorkerWithSimplePriority Task 2.2
-func NewWorkerWithSimplePriority(startTimestamp int64, capacity common.PointType) *SmartWorker {
+func NewWorkerWithSimplePriority(startTimestamp common.TimestampType, capacity common.PointType) *SmartWorker {
 	return &SmartWorker{
 		scheduler: NewScheduler(true, util.SimpleCmp),
 		actuator:  NewActuator(startTimestamp, capacity),
@@ -45,7 +45,7 @@ func NewWorkerWithSimplePriority(startTimestamp int64, capacity common.PointType
 }
 
 // NewWorkerWithSmartPriority Task 2.3
-func NewWorkerWithSmartPriority(startTimestamp int64, capacity common.PointType) *SmartWorker {
+func NewWorkerWithSmartPriority(startTimestamp common.TimestampType, capacity common.PointType) *SmartWorker {
 	return &SmartWorker{
 		scheduler: NewScheduler(true, util.SmartCmp),
 		actuator:  NewActuator(startTimestamp, capacity),

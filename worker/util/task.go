@@ -24,10 +24,9 @@ type Task struct {
 			1. 刚创建的Job的第一个Task的 ExpectedTime = Job.Created
 			2. Job的其他Task 等于前一个Task结束时间 +1s
 	*/
-	expectedTimestamp int64
+	expectedTimestamp common.TimestampType
 	status            TaskStatusType
-
-	speedFlag bool
+	speedFlag         bool
 }
 
 func NewTask(point common.PointType) *Task {
@@ -95,11 +94,11 @@ func (t *Task) SetRunning() {
 	t.status = TaskRunning
 }
 
-func (t *Task) SetExpectedTime(currTimestamp int64) {
+func (t *Task) SetExpectedTime(currTimestamp common.TimestampType) {
 	t.expectedTimestamp = currTimestamp
 }
 
-func (t *Task) ExpectedTimestamp() int64 {
+func (t *Task) ExpectedTimestamp() common.TimestampType {
 	return t.expectedTimestamp
 }
 
@@ -108,11 +107,10 @@ func (t *Task) Finished() bool {
 }
 
 func (t *Task) String() string {
+	if t.speedFlag && t.remainPoint > 0 && t.taskPoint%2 == 0 {
+		return fmt.Sprintf("%d(%d)", t.taskID, t.remainPoint/2)
+	}
 	return fmt.Sprintf("%d(%d)", t.taskID, t.remainPoint)
-}
-
-func (t *Task) StringWithExpectedTime() string {
-	return fmt.Sprintf("%d(%d-%d)", t.taskID, t.expectedTimestamp, t.remainPoint)
 }
 
 func (t *Task) Running(tick int) {

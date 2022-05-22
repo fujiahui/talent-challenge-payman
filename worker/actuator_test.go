@@ -8,7 +8,7 @@ import (
 
 func TestActuator_Ticking(t *testing.T) {
 	// timestamp <---> Job
-	jobMap := make(map[int64][]*util.Job)
+	jobMap := make(map[common.TimestampType][]*util.Job)
 	jobMap[1] = []*util.Job{
 		util.NewJob(1, 1, common.LowPriority, []*util.Task{
 			util.NewTask(5),

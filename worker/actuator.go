@@ -10,15 +10,13 @@ import (
 
 // Actuator Job执行管理器
 type Actuator struct {
-	currTimestamp int64               // 当前时间戳
-	jobs          map[int64]*util.Job // ID <--> *Job
-
-	// 当前分配的任务，剩余的Points数
+	currTimestamp  common.TimestampType // 当前时间戳
+	jobs           map[int64]*util.Job  // ID <--> *Job
 	capacity       common.PointType
 	executingPoint common.PointType
 }
 
-func NewActuator(startTimestamp int64, capacity common.PointType) *Actuator {
+func NewActuator(startTimestamp common.TimestampType, capacity common.PointType) *Actuator {
 	return &Actuator{
 		currTimestamp:  startTimestamp,
 		jobs:           make(map[int64]*util.Job),
@@ -31,7 +29,7 @@ func (c *Actuator) ExecutingPoint() common.PointType {
 	return c.executingPoint
 }
 
-func (c *Actuator) CurrTimestamp() int64 {
+func (c *Actuator) CurrTimestamp() common.TimestampType {
 	return c.currTimestamp
 }
 

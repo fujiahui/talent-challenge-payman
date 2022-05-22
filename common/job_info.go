@@ -9,10 +9,10 @@ import (
 )
 
 type JobInfo struct {
-	ID       int64        `json:"JobID"`
-	Created  int64        `json:"Created"`
-	Priority PriorityType `json:"Priority"`
-	Tasks    []PointType  `json:"Tasks"`
+	ID       int64         `json:"JobID"`
+	Created  TimestampType `json:"Created"`
+	Priority PriorityType  `json:"Priority"`
+	Tasks    []PointType   `json:"Tasks"`
 }
 
 func NewJobInfo(filename string) *JobInfo {
@@ -52,14 +52,14 @@ func NewJobInfo(filename string) *JobInfo {
 				job.ID = id
 			case "Created":
 				tt := strings.Split(line, ":")
-				created := int64(0)
+				created := TimestampType(0)
 				for _, t := range tt {
 					it, err := strconv.ParseInt(t, 0, 64)
 					if err != nil {
 						return nil
 					}
 					created *= 60
-					created += it
+					created += TimestampType(it)
 				}
 				job.Created = created
 			case "Priority":

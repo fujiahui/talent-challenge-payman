@@ -9,7 +9,7 @@ import (
 
 type DataHubServer struct {
 	dirPath    string
-	jobInfoMap map[int64]*common.JobInfoArray
+	jobInfoMap map[common.TimestampType]*common.JobInfoArray
 }
 
 func NewDataHubServer(dirPath string) *DataHubServer {
@@ -19,7 +19,7 @@ func NewDataHubServer(dirPath string) *DataHubServer {
 func newDataHubServer(dirPath string) *DataHubServer {
 	server := &DataHubServer{
 		dirPath:    dirPath,
-		jobInfoMap: make(map[int64]*common.JobInfoArray),
+		jobInfoMap: make(map[common.TimestampType]*common.JobInfoArray),
 	}
 
 	filePaths := getFilePaths(dirPath)
@@ -40,7 +40,7 @@ func newDataHubServer(dirPath string) *DataHubServer {
 	return server
 }
 
-func (s *DataHubServer) GetJobInfo(created int64) *common.JobInfoArray {
+func (s *DataHubServer) GetJobInfo(created common.TimestampType) *common.JobInfoArray {
 	jobArray, ok := s.jobInfoMap[created]
 	if !ok {
 		return nil

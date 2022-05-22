@@ -52,7 +52,7 @@ func TestNewBaseWorker(t *testing.T) {
 	dirPath := "../warehouse/data/"
 	dataHub := server.NewDataHubServer(dirPath)
 
-	startTimestamp := int64(-1)
+	startTimestamp := common.TimestampType(-1)
 	w := NewBaseWorker(startTimestamp)
 	wg.Add(1)
 	go func() {
@@ -75,7 +75,7 @@ func TestNewWorkerWithCapacity(t *testing.T) {
 	dirPath := "../warehouse/data/"
 	dataHub := server.NewDataHubServer(dirPath)
 
-	startTimestamp := int64(-1)
+	startTimestamp := common.TimestampType(-1)
 	capacity := common.PointType(10)
 	w := NewWorkerWithCapacity(startTimestamp, capacity)
 	wg.Add(1)
@@ -99,7 +99,7 @@ func TestNewWorkerWithSimplePriority(t *testing.T) {
 	dirPath := "../warehouse/data/"
 	dataHub := server.NewDataHubServer(dirPath)
 
-	startTimestamp := int64(-1)
+	startTimestamp := common.TimestampType(-1)
 	capacity := common.PointType(10)
 	w := NewWorkerWithSimplePriority(startTimestamp, capacity)
 	wg.Add(1)
@@ -123,7 +123,7 @@ func TestNewWorkerWithSmartPriority(t *testing.T) {
 	dirPath := "../warehouse/data/"
 	dataHub := server.NewDataHubServer(dirPath)
 
-	startTimestamp := int64(-1)
+	startTimestamp := common.TimestampType(-1)
 	capacity := common.PointType(10)
 	// capacity := common.PointType(15)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
@@ -148,7 +148,7 @@ func TestNewWorkerWithNumPriority(t *testing.T) {
 	dirPath := "../warehouse/data_num_priority/"
 	dataHub := server.NewDataHubServer(dirPath)
 
-	startTimestamp := int64(-1)
+	startTimestamp := common.TimestampType(-1)
 	capacity := common.PointType(10)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	wg.Add(1)
@@ -172,7 +172,7 @@ func TestNewWorkerWithTaskSpeed(t *testing.T) {
 	dirPath := "../warehouse/data_num_priority/"
 	dataHub := server.NewDataHubServer(dirPath)
 
-	startTimestamp := int64(-1)
+	startTimestamp := common.TimestampType(-1)
 	capacity := common.PointType(10)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	// w := NewBaseWorker(startTimestamp)
