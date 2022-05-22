@@ -85,7 +85,7 @@ func TestNewWorkerWithCapacity(t *testing.T) {
 		w.Start(ctx, dataHub.GetJobInfo)
 	}()
 
-	time.Sleep(time.Duration(5000) * time.Millisecond)
+	time.Sleep(time.Duration(2000) * time.Millisecond)
 	cancel()
 	wg.Wait()
 }

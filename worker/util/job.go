@@ -15,7 +15,8 @@ const (
 	JobFinished = JobStatusType(8)
 )
 
-func BaseCmp(j1 *Job, j2 *Job) bool {
+func BaseCmp(x any, y any) bool {
+	j1, j2 := x.(*Job), y.(*Job)
 	t1, t2 := j1.CurrTask(), j2.CurrTask()
 	if t1.ExpectedTimestamp() < t2.ExpectedTimestamp() {
 		return true
@@ -26,8 +27,9 @@ func BaseCmp(j1 *Job, j2 *Job) bool {
 	return j1.ID() < j2.ID()
 }
 
-func SimpleCmp(j1 *Job, j2 *Job) bool {
+func SimpleCmp(x any, y any) bool {
 	// 1. 按照期待开始时间进行比较排序
+	j1, j2 := x.(*Job), y.(*Job)
 	t1, t2 := j1.CurrTask(), j2.CurrTask()
 	if t1.ExpectedTimestamp() < t2.ExpectedTimestamp() {
 		return true
@@ -45,8 +47,9 @@ func SimpleCmp(j1 *Job, j2 *Job) bool {
 	return j1.ID() < j2.ID()
 }
 
-func SmartCmp(j1 *Job, j2 *Job) bool {
+func SmartCmp(x any, y any) bool {
 	// 1. 按照Job优先级加权重进行比较排序
+	j1, j2 := x.(*Job), y.(*Job)
 	if j1.Weight() < j2.Weight() {
 		return true
 	} else if j1.Weight() > j2.Weight() {

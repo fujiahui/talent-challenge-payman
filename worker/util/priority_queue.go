@@ -2,64 +2,22 @@ package util
 
 import (
 	"container/heap"
-	"container/list"
 	"github.com/fujiahui/talnet-challenge-payman/common"
 )
 
-type CmpHandler func(j1 *Job, j2 *Job) bool
-
-type JobQueue struct {
-	priority common.PriorityType
-	Queue    *list.List // 同一优先级进行排序
-	index    int
-}
-
-func NewJobQueue(priority common.PriorityType) *JobQueue {
-	return &JobQueue{
-		priority: priority,
-		Queue:    list.New(),
-	}
-}
-
-func (q *JobQueue) Front() *Job {
-	e := q.Queue.Front()
-	if e == nil {
-		return nil
-	}
-	return e.Value.(*Job)
-}
-
-func (q *JobQueue) Len() int {
-	return q.Queue.Len()
-}
-
-func (q *JobQueue) PushBack(job *Job) {
-	q.Queue.PushBack(job)
-}
-
-func (q *JobQueue) PopFront() *Job {
-	e := q.Queue.Front()
-	if e == nil {
-		return nil
-	}
-	q.Queue.Remove(e)
-	job := e.Value.(*Job)
-	return job
-}
+type CmpHandler func(x any, y any) bool
 
 type JobPriorityQueue struct {
-	enablePriority    bool
-	queue             []*JobQueue
+	queues            []*JobQueue
 	Priority2JobQueue map[common.PriorityType]*JobQueue
 
 	cmp CmpHandler
 }
 
-func NewJobPriorityQueue(enablePriority bool, cmp CmpHandler) *JobPriorityQueue {
+func NewJobPriorityQueue(cmp CmpHandler) *JobPriorityQueue {
 
 	pq := &JobPriorityQueue{
-		enablePriority:    enablePriority,
-		queue:             make([]*JobQueue, 0, 16),
+		queues:            make([]*JobQueue, 0, 16),
 		Priority2JobQueue: make(map[common.PriorityType]*JobQueue),
 		cmp:               cmp,
 	}
@@ -67,57 +25,51 @@ func NewJobPriorityQueue(enablePriority bool, cmp CmpHandler) *JobPriorityQueue 
 	return pq
 }
 
-func (pq JobPriorityQueue) Len() int { return len(pq.queue) }
+func (pq JobPriorityQueue) Len() int { return len(pq.queues) }
 
 func (pq JobPriorityQueue) Less(i, j int) bool {
-	j1 := pq.queue[i].Queue.Front().Value.(*Job)
-	j2 := pq.queue[j].Queue.Front().Value.(*Job)
+	x := pq.queues[i].queue.Front().Value
+	y := pq.queues[j].queue.Front().Value
 
-	return pq.cmp(j1, j2)
+	return pq.cmp(x, y)
 }
 
 func (pq JobPriorityQueue) Swap(i, j int) {
-	pq.queue[i], pq.queue[j] = pq.queue[j], pq.queue[i]
-	pq.queue[i].index = i
-	pq.queue[j].index = j
+	pq.queues[i], pq.queues[j] = pq.queues[j], pq.queues[i]
+	pq.queues[i].index = i
+	pq.queues[j].index = j
 }
 
 func (pq *JobPriorityQueue) Push(x any) {
-	n := len(pq.queue)
+	n := len(pq.queues)
 	item := x.(*JobQueue)
 	item.index = n
-	pq.queue = append(pq.queue, item)
+	pq.queues = append(pq.queues, item)
 	//
 	priority := item.priority
 	pq.Priority2JobQueue[priority] = item
 }
 
 func (pq *JobPriorityQueue) Pop() any {
-	old := pq.queue
+	old := pq.queues
 	n := len(old)
 	item := old[n-1]
 	old[n-1] = nil
 	item.index = -1
-	pq.queue = old[0 : n-1]
+	pq.queues = old[0 : n-1]
 	//
 	priority := item.priority
 	delete(pq.Priority2JobQueue, priority)
 	return item
 }
 
-func (pq *JobPriorityQueue) PopFront(freePoint common.PointType) *Job {
+func (pq *JobPriorityQueue) PopFront() any {
 	if pq.Len() == 0 {
 		return nil
 	}
 
 	q := heap.Pop(pq).(*JobQueue)
-	job := q.Front()
-	if job.CurrTask().RemainPoint() > freePoint {
-		heap.Push(pq, q)
-		return nil
-	}
-
-	q.PopFront()
+	job := q.PopFront()
 	if q.Len() > 0 {
 		heap.Push(pq, q)
 	}
@@ -125,18 +77,24 @@ func (pq *JobPriorityQueue) PopFront(freePoint common.PointType) *Job {
 	return job
 }
 
-func (pq *JobPriorityQueue) PushBack(job *Job) {
-	priority := common.LowPriority
-	if pq.enablePriority {
-		priority = job.Priority()
-	}
-
+func (pq *JobPriorityQueue) PushBack(priority common.PriorityType, x any) {
 	if q, ok := pq.at(priority); !ok {
 		q = NewJobQueue(priority)
-		q.PushBack(job)
+		q.PushBack(x)
 		heap.Push(pq, q)
 	} else {
-		q.PushBack(job)
+		q.PushBack(x)
+	}
+}
+
+func (pq *JobPriorityQueue) PushFront(priority common.PriorityType, x any) {
+	if q, ok := pq.at(priority); !ok {
+		q = NewJobQueue(priority)
+		q.PushFront(x)
+		heap.Push(pq, q)
+	} else {
+		q.PushFront(x)
+		heap.Fix(pq, q.index)
 	}
 }
 
