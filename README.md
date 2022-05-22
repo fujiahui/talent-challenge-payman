@@ -21,6 +21,8 @@
 
 ## 2.2 Job调度管理器 Scheduler
     Scheduler调度管理器基于*优先队列 Priority Queue*进行Job调度。
+    1. Enqueue入队: 方法用于将一个Job压入优先队列中；
+    2. Enqueue出队: 方法用于从优先队列中获取一个优先级最高的Job。
 
 # 三、测试用例
     笔试的Task在测试用例 smart_worker_test.go文件中实现。
