@@ -8,7 +8,6 @@ import (
 )
 
 var (
-	// 默认创建 ssLogger为 os.Stdout 输出的模式
 	ChartLogger = &chartStdLogger{
 		chartSugaredLogger: newZapLogger(false, os.Stdout, nil).Sugar(),
 	}
