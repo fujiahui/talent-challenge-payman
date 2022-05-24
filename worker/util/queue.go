@@ -22,6 +22,7 @@ func NewJobQueue(priority common.PriorityType) *JobQueue {
 func (q *JobQueue) Front() any {
 	e := q.queue.Front()
 	if e == nil {
+		logger.Errorf("JobQueue.Front return nil")
 		return nil
 	}
 	return e.Value

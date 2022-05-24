@@ -3,6 +3,7 @@ package worker
 import (
 	"fmt"
 	"github.com/fujiahui/talnet-challenge-payman/common"
+	"github.com/fujiahui/talnet-challenge-payman/logger"
 	"github.com/fujiahui/talnet-challenge-payman/worker/util"
 	"strings"
 	"time"
@@ -69,6 +70,10 @@ func (c *Actuator) Ticking(tick int) []*util.Job {
 
 // Execute 执行一个Job
 func (c *Actuator) Execute(job *util.Job) {
+	if _, ok := c.jobs[job.ID()]; ok {
+		// job的tasks存在非顺序执行
+		logger.Panicf("job not sequentially executes job tasks")
+	}
 	c.jobs[job.ID()] = job
 	job.SetRunning()
 
@@ -76,6 +81,10 @@ func (c *Actuator) Execute(job *util.Job) {
 	t.SetRunning()
 
 	c.executingPoint += t.TaskPoint()
+	if c.executingPoint > c.capacity {
+		// 容量超限
+		logger.Panicf("Actuator's executingPoint %d more than capacity %d ", c.executingPoint, c.capacity)
+	}
 	return
 }
 

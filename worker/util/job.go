@@ -146,7 +146,7 @@ func (j *Job) CurrTask() *Task {
 		2. 如果Job处于正在运行状态, 则返回当前正在运行的Task
 	*/
 	if j.curr >= len(j.tasks) {
-		logger.Errorf("curr out of range")
+		logger.Panicf("curr out of range")
 		return nil
 	}
 	return j.tasks[j.curr]
@@ -157,7 +157,6 @@ func (j *Job) NextTask(currTimestamp common.TimestampType) {
 	j.curr++
 	if j.curr == len(j.tasks) {
 		j.status = JobFinished
-		logger.Infof("Job %d Execute All tasks", j.id)
 		return
 	}
 	j.CurrTask().SetExpectedTime(currTimestamp)

@@ -8,6 +8,10 @@ type (
 )
 
 const (
+	MaxCapacity = PointType(uint32(1<<16) - 1)
+)
+
+const (
 	LowPriority     = PriorityType(0)
 	HighPriority    = PriorityType(10)
 	HighestPriority = PriorityType(100)

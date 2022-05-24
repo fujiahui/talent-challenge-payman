@@ -21,7 +21,7 @@ type SmartWorker struct {
 
 // NewBaseWorker Task 1.2
 func NewBaseWorker(startTimestamp common.TimestampType) *SmartWorker {
-	capacity := common.PointType(1 << 15) // 16位最大整数 == 不限制容量
+	capacity := common.MaxCapacity // 16位最大整数 == 不限制容量
 	return &SmartWorker{
 		scheduler: NewScheduler(false, util.BaseCmp),
 		actuator:  NewActuator(startTimestamp, capacity),

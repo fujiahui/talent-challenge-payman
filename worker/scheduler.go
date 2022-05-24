@@ -2,7 +2,6 @@ package worker
 
 import (
 	"github.com/fujiahui/talnet-challenge-payman/common"
-	"github.com/fujiahui/talnet-challenge-payman/logger"
 	"github.com/fujiahui/talnet-challenge-payman/worker/util"
 )
 
@@ -42,7 +41,6 @@ func (s *Scheduler) Dequeue(freePoint common.PointType) *util.Job {
 			priority = common.LowPriority
 		}
 		s.pq.PushFront(priority, job)
-		logger.Warnf("Scheduler.Dequeue return nil, because RemainPoint %d more than freePoint %d", job.CurrTask().RemainPoint(), freePoint)
 		return nil
 	}
 
