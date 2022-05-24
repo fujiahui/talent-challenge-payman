@@ -74,6 +74,10 @@ func (w *SmartWorker) Start(ctx context.Context, h handler) {
 
 				tooManyPoint := false
 				for _, task := range info.Tasks {
+					point := task
+					if w.speedFlag && point%2 == 0 {
+						point /= 2
+					}
 					if task > w.actuator.Capacity() {
 						logger.Warnf("%d-%d's task point more than capacity %d", info.ID, task, w.actuator.Capacity())
 						tooManyPoint = true

@@ -182,7 +182,7 @@ func TestNewWorkerWithTaskSpeed(t *testing.T) {
 
 	startTimestamp := common.TimestampType(-1)
 	// capacity := common.PointType(10)
-	capacity := common.PointType(15)
+	capacity := common.PointType(6)
 	logger.ChartLogger.Printf("Start TestNewWorkerWithTaskSpeed capacity=%d", capacity)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	// w := NewBaseWorker(startTimestamp)
