@@ -3,6 +3,7 @@ package worker
 import (
 	"context"
 	"github.com/fujiahui/talnet-challenge-payman/common"
+	"github.com/fujiahui/talnet-challenge-payman/logger"
 	"github.com/fujiahui/talnet-challenge-payman/server"
 	"sync"
 	"testing"
@@ -53,6 +54,7 @@ func TestNewBaseWorker(t *testing.T) {
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := common.TimestampType(-1)
+	logger.ChartLogger.Printf("Start TestNewBaseWorker")
 	w := NewBaseWorker(startTimestamp)
 	wg.Add(1)
 	go func() {
@@ -61,7 +63,7 @@ func TestNewBaseWorker(t *testing.T) {
 		w.Start(ctx, dataHub.GetJobInfo)
 	}()
 
-	time.Sleep(time.Duration(2000) * time.Millisecond)
+	time.Sleep(time.Duration(20000) * time.Millisecond)
 	cancel()
 	wg.Wait()
 }
@@ -78,6 +80,7 @@ func TestNewWorkerWithCapacity(t *testing.T) {
 	startTimestamp := common.TimestampType(-1)
 	// capacity := common.PointType(10)
 	capacity := common.PointType(15)
+	logger.ChartLogger.Printf("Start TestNewWorkerWithCapacity capacity=%d", capacity)
 	w := NewWorkerWithCapacity(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -103,6 +106,7 @@ func TestNewWorkerWithSimplePriority(t *testing.T) {
 	startTimestamp := common.TimestampType(-1)
 	// capacity := common.PointType(10)
 	capacity := common.PointType(6)
+	logger.ChartLogger.Printf("Start TestNewWorkerWithSimplePriority capacity=%d", capacity)
 	w := NewWorkerWithSimplePriority(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -128,6 +132,7 @@ func TestNewWorkerWithSmartPriority(t *testing.T) {
 	startTimestamp := common.TimestampType(-1)
 	capacity := common.PointType(10)
 	// capacity := common.PointType(15)
+	logger.ChartLogger.Printf("Start TestNewWorkerWithSmartPriority capacity=%d", capacity)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -152,6 +157,7 @@ func TestNewWorkerWithNumPriority(t *testing.T) {
 
 	startTimestamp := common.TimestampType(-1)
 	capacity := common.PointType(10)
+	logger.ChartLogger.Printf("Start TestNewWorkerWithNumPriority capacity=%d", capacity)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -177,6 +183,7 @@ func TestNewWorkerWithTaskSpeed(t *testing.T) {
 	startTimestamp := common.TimestampType(-1)
 	// capacity := common.PointType(10)
 	capacity := common.PointType(15)
+	logger.ChartLogger.Printf("Start TestNewWorkerWithTaskSpeed capacity=%d", capacity)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	// w := NewBaseWorker(startTimestamp)
 	w.EnableTaskSpeed() // 启用Task任务加速

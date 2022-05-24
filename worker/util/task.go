@@ -1,8 +1,10 @@
 package util
 
 import (
+	"context"
 	"fmt"
 	"github.com/fujiahui/talnet-challenge-payman/common"
+	"github.com/fujiahui/talnet-challenge-payman/logger"
 	"time"
 )
 
@@ -113,10 +115,15 @@ func (t *Task) String() string {
 	return fmt.Sprintf("%d(%d)", t.taskID, t.remainPoint)
 }
 
-func (t *Task) Running(tick int) {
+func (t *Task) Running(ctx context.Context, tick int) {
 	remainPoint := t.remainPoint
 	for point := remainPoint; point > 0; point-- {
 		time.Sleep(time.Duration(tick) * time.Millisecond)
-		fmt.Printf("JobRunning %d-%d(%d)", t.jobID, t.taskID, point)
+		// fmt.Printf("JobRunning %d-%d(%d)", t.jobID, t.taskID, point)
+		// logger.Infof("JobRunning %d-%d(%d)", t.jobID, t.taskID, point)
+		if ctx.Err() != nil {
+			logger.Errorf("(%d-%d) Task Exit, RemainPoint %d, error %v", t.jobID, t.taskID, t.RemainPoint(), ctx.Err())
+			break
+		}
 	}
 }

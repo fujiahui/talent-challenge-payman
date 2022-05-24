@@ -2,8 +2,8 @@ package worker
 
 import (
 	"context"
-	"fmt"
 	"github.com/fujiahui/talnet-challenge-payman/common"
+	"github.com/fujiahui/talnet-challenge-payman/logger"
 	"github.com/fujiahui/talnet-challenge-payman/worker/util"
 	"sync"
 )
@@ -75,6 +75,7 @@ func (w *SmartWorker) Start(ctx context.Context, h handler) {
 				tooManyPoint := false
 				for _, task := range info.Tasks {
 					if task > w.actuator.Capacity() {
+						logger.Warnf("%d-%d's task point more than capacity %d", info.ID, task, w.actuator.Capacity())
 						tooManyPoint = true
 						break
 					}
@@ -113,14 +114,14 @@ func (w *SmartWorker) Start(ctx context.Context, h handler) {
 			wg.Add(1)
 			go func(t *util.Task) {
 				defer wg.Done()
-				// t.Running(tick)
+				t.Running(ctx, tick)
 			}(job.CurrTask())
 
 		}
 
-		fmt.Println(w.actuator.String())
-		// fmt.Println(w.actuator.StringWithPriority())
+		logger.ChartLogger.Println(w.actuator.String())
 		if ctx.Err() != nil {
+			logger.Errorf("Worker Exit, error %v", ctx.Err())
 			break
 		}
 

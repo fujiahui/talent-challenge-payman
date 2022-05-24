@@ -64,6 +64,7 @@ func (pq *JobPriorityQueue) Pop() any {
 }
 
 func (pq *JobPriorityQueue) PopFront() any {
+
 	if pq.Len() == 0 {
 		return nil
 	}

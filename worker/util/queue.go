@@ -3,6 +3,7 @@ package util
 import (
 	"container/list"
 	"github.com/fujiahui/talnet-challenge-payman/common"
+	"github.com/fujiahui/talnet-challenge-payman/logger"
 )
 
 type JobQueue struct {
@@ -41,6 +42,7 @@ func (q *JobQueue) PushFront(x any) {
 func (q *JobQueue) PopFront() any {
 	e := q.queue.Front()
 	if e == nil {
+		logger.Errorf("JobQueue.PushFront return nil")
 		return nil
 	}
 	q.queue.Remove(e)

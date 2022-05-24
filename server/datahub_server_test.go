@@ -6,9 +6,9 @@ import (
 )
 
 func TestDataHubServer_GetJobInfo(t *testing.T) {
-	dirPath := "/Users/fujiahui/go-workspace/talent-challenge-payman/warehouse/data/"
+	dirPath := "../warehouse/data/"
 	svr := NewDataHubServer(dirPath)
-	for i := common.TimestampType(0); i < 100; i++ {
+	for i := common.TimestampType(0); i < 1000; i++ {
 		jobArray := svr.GetJobInfo(i)
 		if jobArray != nil {
 			t.Log(jobArray.ToJsonString())
