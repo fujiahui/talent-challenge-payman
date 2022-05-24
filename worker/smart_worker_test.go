@@ -76,7 +76,8 @@ func TestNewWorkerWithCapacity(t *testing.T) {
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := common.TimestampType(-1)
-	capacity := common.PointType(10)
+	// capacity := common.PointType(10)
+	capacity := common.PointType(15)
 	w := NewWorkerWithCapacity(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -85,7 +86,7 @@ func TestNewWorkerWithCapacity(t *testing.T) {
 		w.Start(ctx, dataHub.GetJobInfo)
 	}()
 
-	time.Sleep(time.Duration(2000) * time.Millisecond)
+	time.Sleep(time.Duration(20000) * time.Millisecond)
 	cancel()
 	wg.Wait()
 }
@@ -100,7 +101,8 @@ func TestNewWorkerWithSimplePriority(t *testing.T) {
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := common.TimestampType(-1)
-	capacity := common.PointType(10)
+	// capacity := common.PointType(10)
+	capacity := common.PointType(6)
 	w := NewWorkerWithSimplePriority(startTimestamp, capacity)
 	wg.Add(1)
 	go func() {
@@ -109,7 +111,7 @@ func TestNewWorkerWithSimplePriority(t *testing.T) {
 		w.Start(ctx, dataHub.GetJobInfo)
 	}()
 
-	time.Sleep(time.Duration(5000) * time.Millisecond)
+	time.Sleep(time.Duration(60000) * time.Millisecond)
 	cancel()
 	wg.Wait()
 }
@@ -173,7 +175,8 @@ func TestNewWorkerWithTaskSpeed(t *testing.T) {
 	dataHub := server.NewDataHubServer(dirPath)
 
 	startTimestamp := common.TimestampType(-1)
-	capacity := common.PointType(10)
+	// capacity := common.PointType(10)
+	capacity := common.PointType(15)
 	w := NewWorkerWithSmartPriority(startTimestamp, capacity)
 	// w := NewBaseWorker(startTimestamp)
 	w.EnableTaskSpeed() // 启用Task任务加速

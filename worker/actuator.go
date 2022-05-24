@@ -25,6 +25,10 @@ func NewActuator(startTimestamp common.TimestampType, capacity common.PointType)
 	}
 }
 
+func (c *Actuator) Capacity() common.PointType {
+	return c.capacity
+}
+
 func (c *Actuator) ExecutingPoint() common.PointType {
 	return c.executingPoint
 }

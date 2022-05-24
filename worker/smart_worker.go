@@ -71,6 +71,17 @@ func (w *SmartWorker) Start(ctx context.Context, h handler) {
 		// 1. 每隔1ms / 1s 获取一批次的job列表
 		if jobArray := h(w.actuator.CurrTimestamp()); jobArray != nil {
 			for _, info := range jobArray.JobInfos {
+
+				tooManyPoint := false
+				for _, task := range info.Tasks {
+					if task > w.actuator.Capacity() {
+						tooManyPoint = true
+						break
+					}
+				}
+				if tooManyPoint {
+					continue
+				}
 				job := util.NewJobFromCommon(info)
 				if job == nil {
 					continue
